@@ -14,13 +14,13 @@ public class SnailScript : MonoBehaviour
     private Animator animator;
     public float Speed = 1f;
     private bool stunned;
-    private bool canMove;    
-    public  Transform down_collision,left_collision,right_collision,top_collision;
+    private bool canMove;
+    public Transform down_collision, left_collision, right_collision, top_collision;
     public LayerMask playerLayer;
     private Vector3 left_position, right_position;
 
     private bool moveLeft;
-     void Awake()
+    void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -49,7 +49,7 @@ public class SnailScript : MonoBehaviour
 
             }
         }
-   
+
         CheckColision();
     }
 
@@ -69,7 +69,7 @@ public class SnailScript : MonoBehaviour
                     topHit.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(topHit.gameObject.GetComponent<Rigidbody2D>().velocity.x, 7f);
                     stunned = true;
                     canMove = false;
-                    body.velocity= new Vector2(0,0);
+                    body.velocity = new Vector2(0, 0);
 
                     if (tag == Tags.BeetleTag)
                     {
@@ -118,7 +118,7 @@ public class SnailScript : MonoBehaviour
                 }
             }
         }
-        if (!Physics2D.Raycast(down_collision.position,Vector2.down,0.01f))
+        if (!Physics2D.Raycast(down_collision.position, Vector2.down, 0.01f))
         {
             ChangeDirection();
         }
@@ -149,11 +149,42 @@ public class SnailScript : MonoBehaviour
         else
         {
             left_position = right_collision.position;
-            right_position= left_collision.position;
+            right_position = left_collision.position;
             temp.x = -Mathf.Abs(temp.x);
         }
 
         transform.localScale = temp;
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == Tags.Bullet)
+        {
+            if (tag == Tags.BeetleTag)
+            {
+                canMove = false;
+                StartCoroutine(Dead(0.1f));
+                body.velocity = new Vector2(0, 0);
+                animator.Play("Stuned");
+
+            }
+            if (tag == Tags.SnailTag)
+            {
+                if (!stunned)
+                {
+                    canMove = false;
+                    body.velocity = new Vector2(0, 0);
+                    animator.Play("Stuned");
+                    stunned = true;
+
+
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+        }
     }
 }

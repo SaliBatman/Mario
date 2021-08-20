@@ -12,5 +12,7 @@ namespace Assets.Helpers
         public const string PlayerTag = "Player";
 
         public const string BeetleTag = "Beetle";
+        public const string SnailTag = "Snail";
+        public const string Bullet = "Bullet";
     }
 }
