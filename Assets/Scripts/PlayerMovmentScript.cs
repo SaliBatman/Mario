@@ -20,7 +20,7 @@ public class PlayerMovmentScript : MonoBehaviour
     private bool jumped;
 
     private bool isGrounded;
-    public float JumpPower = 5f;
+    public float JumpPower = 7f;
     void Start()
     {
 
